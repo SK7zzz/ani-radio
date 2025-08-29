@@ -83,7 +83,7 @@ export const useAniList = () => {
         setSelectedUser(user)
         setSearchQuery(user.name) // Update search query to selected user name
         setSearchResults([]) // Hide dropdown after selection
-        console.log(`✅ User selected: ${user.name}`)
+        // console.log(`✅ User selected: ${user.name}`)
     }, [])
 
     const handleSelectFirstUser = useCallback(() => {

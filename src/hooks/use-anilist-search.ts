@@ -108,13 +108,13 @@ export const useAniListSearch = () => {
 
     const handleSelectUser = useCallback((user: User) => {
         selectUser(user)
-        console.log(`✅ User selected: ${user.name}`)
+        //  console.log(`✅ User selected: ${user.name}`)
 
         // Initialize music player with selected user
         setCurrentUser(user.name)
         clearQueue() // Clear any existing queue
 
-        console.log(`🎵 Initializing music player for user: ${user.name}`)
+        //    console.log(`🎵 Initializing music player for user: ${user.name}`)
 
         // Navigate to playlist route with user parameter
         navigate({
@@ -127,13 +127,13 @@ export const useAniListSearch = () => {
         if (selectFirstUser()) {
             const firstUser = searchResults[0]
             if (firstUser) {
-                console.log(`✅ First user selected: ${firstUser.name}`)
+                //    console.log(`✅ First user selected: ${firstUser.name}`)
 
                 // Initialize music player with selected user
                 setCurrentUser(firstUser.name)
                 clearQueue() // Clear any existing queue
 
-                console.log(`🎵 Initializing music player for user: ${firstUser.name}`)
+                //    console.log(`🎵 Initializing music player for user: ${firstUser.name}`)
 
                 // Navigate to playlist route with user parameter
                 navigate({

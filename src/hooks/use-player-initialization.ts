@@ -42,12 +42,12 @@ export const usePlayerInitialization = ({
                 setUserExistsInCache(exists)
 
                 if (exists) {
-                    console.log(`✅ User ${username} found in IndexedDB cache - auto-play should activate`)
+                    //      console.log(`✅ User ${username} found in IndexedDB cache - auto-play should activate`)
                 } else {
-                    console.log(`ℹ️ User ${username} not found in IndexedDB cache`)
+                    //      console.log(`ℹ️ User ${username} not found in IndexedDB cache`)
                 }
             } catch (error) {
-                console.error('❌ Error checking user in cache:', error)
+                // console.error('❌ Error checking user in cache:', error)
                 setUserExistsInCache(false)
             } finally {
                 setIsCheckingUser(false)
@@ -67,7 +67,7 @@ export const usePlayerInitialization = ({
         setError(false)
 
         try {
-            console.log(`🎵 Manually initializing player for user: ${targetUsername}`)
+            //     console.log(`🎵 Manually initializing player for user: ${targetUsername}`)
 
             // Set the current user in the store
             setCurrentUser(targetUsername.trim())
@@ -75,9 +75,9 @@ export const usePlayerInitialization = ({
             // Initialize the queue with songs from user's anime
             await initializeQueue(targetUsername.trim())
 
-            console.log(`✅ Player manually initialized successfully for user: ${targetUsername}`)
+            //    console.log(`✅ Player manually initialized successfully for user: ${targetUsername}`)
         } catch (error) {
-            console.error('❌ Failed to manually initialize player:', error)
+            // console.error('❌ Failed to manually initialize player:', error)
             setError(true, `Failed to initialize player for user ${targetUsername}`)
             throw error
         } finally {
@@ -96,9 +96,9 @@ export const usePlayerInitialization = ({
             return
         }
 
-        console.log(`🎵 Auto-initializing player for cached user: ${username}`)
-        manuallyInitializePlayer(username.trim()).catch(error => {
-            console.error('Auto-initialization failed:', error)
+        //      console.log(`🎵 Auto-initializing player for cached user: ${username}`)
+        manuallyInitializePlayer(username.trim()).catch(_error => {
+            // console.error('Auto-initialization failed:', error)
         })
     }, [
         username,

@@ -4,7 +4,7 @@ export const usePWAUpdate = () => {
         needRefresh: false,
         offlineReady: false,
         updateApp: async () => {
-            console.log('No hay actualizaciones automáticas - solo refresca la página');
+            // console.log('No hay actualizaciones automáticas - solo refresca la página');
             window.location.reload();
         },
         dismissUpdate: () => { },

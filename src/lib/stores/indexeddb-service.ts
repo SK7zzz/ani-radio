@@ -22,13 +22,13 @@ class IndexedDBService {
             const request = indexedDB.open(this.dbName, this.version)
 
             request.onerror = () => {
-                console.error('❌ IndexedDB failed to open:', request.error)
+                // console.error('❌ IndexedDB failed to open:', request.error)
                 reject(request.error)
             }
 
             request.onsuccess = () => {
                 this.db = request.result
-                console.log('✅ IndexedDB opened successfully')
+                // console.log('✅ IndexedDB opened successfully')
                 resolve()
             }
 
@@ -40,7 +40,7 @@ class IndexedDBService {
                     const store = db.createObjectStore(this.storeName, { keyPath: 'userId' })
                     store.createIndex('username', 'username', { unique: false })
                     store.createIndex('timestamp', 'timestamp', { unique: false })
-                    console.log('✅ IndexedDB store created')
+                    // console.log('✅ IndexedDB store created')
                 }
             }
         })
@@ -74,12 +74,12 @@ class IndexedDBService {
             const request = store.put(data)
 
             request.onsuccess = () => {
-                console.log(`✅ Stored anime list for user: ${username} (${lists.length} lists, ${this.getTotalAnimeCount(lists)} total anime)`)
+                // console.log(`✅ Stored anime list for user: ${username} (${lists.length} lists, ${this.getTotalAnimeCount(lists)} total anime)`)
                 resolve()
             }
 
             request.onerror = () => {
-                console.error('❌ Failed to store user list:', request.error)
+                // console.error('❌ Failed to store user list:', request.error)
                 reject(request.error)
             }
         })
@@ -106,13 +106,13 @@ class IndexedDBService {
             request.onsuccess = () => {
                 const result = request.result as StoredUserList | undefined
                 if (result) {
-                    console.log(`✅ Retrieved cached anime list for user: ${result.username} (${result.lists.length} lists)`)
+                    // console.log(`✅ Retrieved cached anime list for user: ${result.username} (${result.lists.length} lists)`)
                 }
                 resolve(result || null)
             }
 
             request.onerror = () => {
-                console.error('❌ Failed to retrieve user list:', request.error)
+                // console.error('❌ Failed to retrieve user list:', request.error)
                 reject(request.error)
             }
         })
@@ -148,7 +148,7 @@ class IndexedDBService {
             await this.init()
         }
 
-        console.log(`🔍 Searching for user in IndexedDB: "${username}"`)
+        // console.log(`🔍 Searching for user in IndexedDB: "${username}"`)
 
         return new Promise((resolve, reject) => {
             if (!this.db) {
@@ -161,7 +161,7 @@ class IndexedDBService {
 
             // Get the username index specifically
             const usernameIndex = store.index('username')
-            console.log(`📋 Using username index to search for: "${username}"`)
+            // console.log(`📋 Using username index to search for: "${username}"`)
 
             // Try exact match first
             const request = usernameIndex.get(username)
@@ -169,34 +169,34 @@ class IndexedDBService {
             request.onsuccess = () => {
                 const result = request.result as StoredUserList | undefined
                 if (result) {
-                    console.log(`✅ Found cached user (exact match): ${result.username} (ID: ${result.userId})`)
+                    // console.log(`✅ Found cached user (exact match): ${result.username} (ID: ${result.userId})`)
                     resolve(result)
                 } else {
                     // If not found with exact case, try lowercase
                     const searchUsername = username.toLowerCase()
-                    console.log(`🔍 Exact match failed, trying lowercase: "${searchUsername}"`)
+                    // console.log(`🔍 Exact match failed, trying lowercase: "${searchUsername}"`)
                     const requestLower = usernameIndex.get(searchUsername)
 
                     requestLower.onsuccess = () => {
                         const resultLower = requestLower.result as StoredUserList | undefined
                         if (resultLower) {
-                            console.log(`✅ Found cached user (lowercase): ${resultLower.username} (ID: ${resultLower.userId})`)
+                            // console.log(`✅ Found cached user (lowercase): ${resultLower.username} (ID: ${resultLower.userId})`)
                             resolve(resultLower)
                         } else {
-                            console.log(`❌ User "${username}" not found in IndexedDB cache (tried exact and lowercase)`)
+                            // console.log(`❌ User "${username}" not found in IndexedDB cache (tried exact and lowercase)`)
                             resolve(null)
                         }
                     }
 
                     requestLower.onerror = () => {
-                        console.error('❌ Failed to retrieve user by lowercase username:', requestLower.error)
+                        // console.error('❌ Failed to retrieve user by lowercase username:', requestLower.error)
                         reject(requestLower.error)
                     }
                 }
             }
 
             request.onerror = () => {
-                console.error('❌ Failed to retrieve user by username:', request.error)
+                // console.error('❌ Failed to retrieve user by username:', request.error)
                 reject(request.error)
             }
         })
@@ -234,12 +234,12 @@ class IndexedDBService {
 
             request.onsuccess = () => {
                 const result = request.result as StoredUserList[]
-                console.log(`📚 All stored users in IndexedDB:`, result.map(u => ({ username: u.username, userId: u.userId })))
+                // console.log(`📚 All stored users in IndexedDB:`, result.map(u => ({ username: u.username, userId: u.userId })))
                 resolve(result)
             }
 
             request.onerror = () => {
-                console.error('❌ Failed to retrieve all users:', request.error)
+                // console.error('❌ Failed to retrieve all users:', request.error)
                 reject(request.error)
             }
         })
@@ -268,7 +268,7 @@ class IndexedDBService {
             const randomIndex = Math.floor(Math.random() * allAnime.length)
             return allAnime[randomIndex]
         } catch (error) {
-            console.error('❌ Failed to get random anime:', error)
+            // console.error('❌ Failed to get random anime:', error)
             return null
         }
     }
@@ -292,12 +292,12 @@ class IndexedDBService {
             const request = store.clear()
 
             request.onsuccess = () => {
-                console.log('✅ Cache cleared')
+                // console.log('✅ Cache cleared')
                 resolve()
             }
 
             request.onerror = () => {
-                console.error('❌ Failed to clear cache:', request.error)
+                // console.error('❌ Failed to clear cache:', request.error)
                 reject(request.error)
             }
         })
@@ -306,9 +306,9 @@ class IndexedDBService {
     /**
      * Get statistics about stored data
      */
-    private getTotalAnimeCount(lists: MediaListGroup[]): number {
-        return lists.reduce((total, list) => total + (list.entries?.length || 0), 0)
-    }
+    // private getTotalAnimeCount(lists: MediaListGroup[]): number {
+    //     return lists.reduce((total, list) => total + (list.entries?.length || 0), 0)
+    // }
 
     /**
      * Remove old cached data (older than specified days)
@@ -342,13 +342,13 @@ class IndexedDBService {
                     deletedCount++
                     cursor.continue()
                 } else {
-                    console.log(`✅ Cleaned ${deletedCount} old cache entries`)
+                    // console.log(`✅ Cleaned ${deletedCount} old cache entries`)
                     resolve()
                 }
             }
 
             request.onerror = () => {
-                console.error('❌ Failed to clean old cache:', request.error)
+                // console.error('❌ Failed to clean old cache:', request.error)
                 reject(request.error)
             }
         })

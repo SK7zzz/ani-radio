@@ -82,14 +82,14 @@ export async function getRandomSong(
         animeList?: MediaListEntry[] // OPTIMIZATION: Pass anime list to avoid API calls
     } = {}
 ): Promise<RandomSongResponse> {
-    console.log(`\n🚀 === RANDOM SONG SEARCH ===`)
+    // console.log(`\n🚀 === RANDOM SONG SEARCH ===`)
 
     let allEntries: MediaListEntry[]
 
     // OPTIMIZATION: Use provided anime list if available
     if (options.animeList && options.animeList.length > 0) {
         allEntries = options.animeList
-        console.log(`📚 Using provided anime list with ${allEntries.length} entries (no API call needed)`)
+        // console.log(`📚 Using provided anime list with ${allEntries.length} entries (no API call needed)`)
     } else {
         // Fallback to API call if no list provided
         if (aniListService.isCurrentlyRateLimited()) {
@@ -119,7 +119,7 @@ export async function getRandomSong(
             }
         })
 
-        console.log(`📚 Loaded ${allEntries.length} anime entries from AniList API`)
+        // console.log(`📚 Loaded ${allEntries.length} anime entries from AniList API`)
     }
 
     if (allEntries.length === 0) {
@@ -153,7 +153,7 @@ export async function getRandomSong(
 
     // Select random anime - completely random, no preference for higher ratings
     const selectedEntry = selectRandomAnime(filteredEntries)
-    console.log(`🎬 Selected anime: ${selectedEntry.media.title.romaji} (Score: ${selectedEntry.score})`)
+    // console.log(`🎬 Selected anime: ${selectedEntry.media.title.romaji} (Score: ${selectedEntry.score})`)
 
     // Get anime title in English (prefer English, fallback to romaji)
     const englishTitle = selectedEntry.media.title.english ||
@@ -170,17 +170,15 @@ export async function getRandomSong(
         )
     }
 
-    console.log(`🎵 Searching songs for: ${englishTitle}`)
+    // console.log(`🎵 Searching songs for: ${englishTitle}`)
 
     // Search songs for this anime (try English first)
     let songs = await anisongService.searchAnimeByName(englishTitle)
-    let usedTitle = englishTitle
 
     // If no songs found with English title, try Japanese/Romaji title
     if ((!songs || songs.length === 0) && japaneseTitle && japaneseTitle !== englishTitle) {
-        console.log(`🎌 No songs found with English title, trying Japanese: ${japaneseTitle}`)
+        // console.log(`🎌 No songs found with English title, trying Japanese: ${japaneseTitle}`)
         songs = await anisongService.searchAnimeByName(japaneseTitle)
-        usedTitle = japaneseTitle
     }
 
     if (!songs || songs.length === 0) {
@@ -213,7 +211,7 @@ export async function getRandomSong(
 
     // Combine data and return
     const combinedData = combineAnimeAndSongData(selectedEntry, randomSong)
-    console.log(`✅ Successfully found random song: "${randomSong.songName}" from ${usedTitle}`)
+    // console.log(`✅ Successfully found random song: "${randomSong.songName}" from ${usedTitle}`)
 
     return combinedData
 }

@@ -44,7 +44,7 @@ export const GlobalMusicPlayer = memo(() => {
             !initializationAttempted.current.has(currentUsername)
 
         if (shouldInitialize) {
-            console.log(`🎵 Auto-initializing music queue for user: ${currentUsername}`)
+            // console.log(`🎵 Auto-initializing music queue for user: ${currentUsername}`)
             initializationAttempted.current.add(currentUsername)
             initializeQueue(currentUsername)
         }
@@ -62,7 +62,7 @@ export const GlobalMusicPlayer = memo(() => {
             !autoPlayAttempted.current.has(currentUsername)
 
         if (shouldAutoPlay) {
-            console.log(`🎵 Auto-starting playback for cached user: ${currentUsername}`)
+            //  console.log(`🎵 Auto-starting playback for cached user: ${currentUsername}`)
             autoPlayAttempted.current.add(currentUsername)
             // Add a delay to ensure the MusicPlayer component and audio element are ready
             setTimeout(() => {

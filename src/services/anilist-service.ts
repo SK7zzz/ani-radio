@@ -30,7 +30,7 @@ client.interceptors.request.use(
     return config
   },
   (error) => {
-    console.error('❌ AniList API Request Error:', error)
+    // console.error('❌ AniList API Request Error:', error)
     return Promise.reject(error)
   }
 )
@@ -38,12 +38,12 @@ client.interceptors.request.use(
 client.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.error('❌ AniList API Response Error:', error)
+    // console.error('❌ AniList API Response Error:', error)
     if (error.response?.status === 429) {
-      console.error('🚨 RATE LIMIT HIT - STOPPING ALL PROCESSES')
+      // console.error('🚨 RATE LIMIT HIT - STOPPING ALL PROCESSES')
       isRateLimited = true
       setTimeout(() => {
-        console.log('⏰ Auto-resetting rate limit after 1 minute')
+        // console.log('⏰ Auto-resetting rate limit after 1 minute')
         isRateLimited = false
       }, rateLimitRetryDelay)
       throw new Error(
@@ -56,7 +56,7 @@ client.interceptors.response.use(
 
 export function resetRateLimit(): void {
   isRateLimited = false
-  console.log('✅ Rate limit flag reset')
+  // console.log('✅ Rate limit flag reset')
 }
 
 export function isCurrentlyRateLimited(): boolean {
@@ -74,13 +74,13 @@ async function executeQuery<T>(
     })
 
     if (response.data.errors && response.data.errors.length > 0) {
-      console.error('❌ AniList GraphQL Errors:', response.data.errors)
+      // console.error('❌ AniList GraphQL Errors:', response.data.errors)
       throw new Error(response.data.errors[0].message)
     }
 
     return response.data
   } catch (error) {
-    console.error('❌ executeQuery failed:', error)
+    // console.error('❌ executeQuery failed:', error)
     if (axios.isAxiosError(error)) {
       throw new Error(`AniList API Error: ${error.message}`)
     }
@@ -122,8 +122,8 @@ export async function getUserAnimeList(
   username: string,
   status?: MediaListStatus
 ): Promise<UserMediaListResponse> {
-  console.log(`🚀 === FETCHING ANIME LIST FOR USER: ${username} ===`)
-  console.log(`📦 Status: ${status || 'ALL'}`)
+  // console.log(`🚀 === FETCHING ANIME LIST FOR USER: ${username} ===`)
+  // console.log(`📦 Status: ${status || 'ALL'}`)
 
   const query = `
     query GetUserAnimeList($userName: String!, $type: MediaType!, $status: MediaListStatus) {
@@ -184,17 +184,17 @@ export async function getUserAnimeList(
   try {
     const response = await executeQuery<UserMediaListResponse>(query, variables)
 
-    const totalEntries =
-      response.data.MediaListCollection?.lists?.reduce(
-        (sum, list) => sum + (list.entries?.length || 0),
-        0
-      ) || 0
+    // const totalEntries =
+    //   response.data.MediaListCollection?.lists?.reduce(
+    //     (sum, list) => sum + (list.entries?.length || 0),
+    //     0
+    //   ) || 0
 
-    console.log(`✅ Successfully fetched ${totalEntries} anime entries`)
+    // console.log(`✅ Successfully fetched ${totalEntries} anime entries`)
 
     return response.data
   } catch (error) {
-    console.error(`❌ Failed to fetch anime list for ${username}:`, error)
+    // console.error(`❌ Failed to fetch anime list for ${username}:`, error)
     throw error
   }
 }

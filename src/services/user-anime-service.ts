@@ -29,13 +29,13 @@ export const CACHE_CONFIG = {
 const cleanUsername = (username: string): string => username.trim()
 
 const logUserFound = (user: User): User => {
-    console.log(`✅ User found: ${user.name} (ID: ${user.id})`)
+    // console.log(`✅ User found: ${user.name} (ID: ${user.id})`)
     return user
 }
 
-const logAnimeListLoaded = (animeList: MediaListEntry[], fromCache: boolean): MediaListEntry[] => {
-    const source = fromCache ? 'cache' : 'API and cached'
-    console.log(`📚 Loaded ${animeList.length} anime from ${source}`)
+const logAnimeListLoaded = (animeList: MediaListEntry[], _fromCache: boolean): MediaListEntry[] => {
+    // const source = fromCache ? 'cache' : 'API and cached'
+    // console.log(`📚 Loaded ${animeList.length} anime from ${source}`)
     return animeList
 }
 
@@ -69,10 +69,10 @@ export const cacheOperations = {
     clear: async (userId?: number): Promise<void> => {
         if (userId) {
             // TODO: Implement user-specific cache clearing
-            console.log(`🗑️ Clearing cache for user: ${userId}`)
+            // console.log(`🗑️ Clearing cache for user: ${userId}`)
         } else {
             await indexedDBService.clearCache()
-            console.log('🗑️ All cache cleared')
+            // console.log('🗑️ All cache cleared')
         }
     }
 }
@@ -94,7 +94,7 @@ export const dataOperations = {
      * Fetch user's anime list from API
      */
     fetchAnimeList: async (username: string, status?: MediaListStatus) => {
-        console.log(`🌐 Fetching fresh anime list from AniList API`)
+        // console.log(`🌐 Fetching fresh anime list from AniList API`)
         const response = await aniListService.getUserAnimeList(username, status)
 
         if (!response.MediaListCollection?.lists) {
@@ -112,9 +112,9 @@ export const dataOperations = {
 export const initialize = async (): Promise<void> => {
     try {
         await indexedDBService.init()
-        console.log('✅ UserAnimeService initialized')
+        // console.log('✅ UserAnimeService initialized')
     } catch (error) {
-        console.error('❌ Failed to initialize UserAnimeService:', error)
+        // console.error('❌ Failed to initialize UserAnimeService:', error)
         throw error
     }
 }
@@ -124,7 +124,7 @@ export const initialize = async (): Promise<void> => {
  */
 export const loadUserAndAnimeList = async (username: string): Promise<UserAnimeData> => {
     const cleanedUsername = cleanUsername(username)
-    console.log(`🔍 Loading user and anime list for: ${cleanedUsername}`)
+    // console.log(`🔍 Loading user and anime list for: ${cleanedUsername}`)
 
     // Fetch user data
     const user = await dataOperations.fetchUser(cleanedUsername)
@@ -134,7 +134,7 @@ export const loadUserAndAnimeList = async (username: string): Promise<UserAnimeD
     const isCached = await cacheOperations.isCached(userId)
 
     if (isCached) {
-        console.log(`💾 Using cached anime list for: ${cleanedUsername}`)
+        // console.log(`💾 Using cached anime list for: ${cleanedUsername}`)
         const animeList = await cacheOperations.getCached(userId)
 
         if (animeList.length > 0) {
@@ -176,17 +176,17 @@ export const getRandomAnime = async (
         const randomAnime = await indexedDBService.getRandomAnimeFromUser(userId, statuses)
 
         if (randomAnime) {
-            console.log(`🎲 Random anime selected:`, {
-                id: randomAnime.media.id,
-                title: randomAnime.media.title.userPreferred || randomAnime.media.title.romaji,
-                status: randomAnime.status,
-                score: randomAnime.score
-            })
+            // console.log(`🎲 Random anime selected:`, {
+            //     id: randomAnime.media.id,
+            //     title: randomAnime.media.title.userPreferred || randomAnime.media.title.romaji,
+            //     status: randomAnime.status,
+            //     score: randomAnime.score
+            // })
         }
 
         return randomAnime
     } catch (error) {
-        console.error('❌ Failed to get random anime:', error)
+        // console.error('❌ Failed to get random anime:', error)
         return null
     }
 }
@@ -226,7 +226,7 @@ export const calculateAnimeStats = (animeList: MediaListEntry[]): AnimeStats => 
         paused: 0
     })
 
-    console.log(`📊 User anime stats:`, stats)
+    // console.log(`📊 User anime stats:`, stats)
     return stats
 }
 
@@ -238,7 +238,7 @@ export const getUserAnimeStats = async (userId: number): Promise<AnimeStats | nu
         const animeList = await cacheOperations.getCached(userId)
         return animeList.length > 0 ? calculateAnimeStats(animeList) : null
     } catch (error) {
-        console.error('❌ Failed to get user stats:', error)
+        // console.error('❌ Failed to get user stats:', error)
         return null
     }
 }

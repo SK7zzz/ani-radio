@@ -50,42 +50,42 @@ export const usePlayerQueue = () => {
         for (const strategy of strategies) {
             const cacheData = queryClient.getQueryData<UserAnimeListData>(['user-anime-list', username, strategy])
             if (cacheData?.animeList?.length) {
-                console.log(`📚 Found cached anime list with strategy: ${strategy} (${cacheData.animeList.length} entries)`)
+                //   console.log (`📚 Found cached anime list with strategy: ${strategy} (${cacheData.animeList.length} entries)`)
                 return cacheData.animeList
             }
         }
 
-        console.log(`❌ No cached anime list found for user: ${username}`)
+        //  console.log(`❌ No cached anime list found for user: ${username}`)
         return null
     }, [queryClient])
 
     // Initialize queue with random songs from user's anime list
     const initializeQueue = useCallback(async (username: string) => {
         if (isInitializing || isInitialized) {
-            console.log('🔄 Queue already initializing or initialized')
+            //  console.log('🔄 Queue already initializing or initialized')
             return
         }
 
         // Safety check: if queue already has songs, don't reinitialize
         if (queue.length > 0) {
-            console.log('🔄 Queue already has songs, skipping initialization')
+            // console.log('🔄 Queue already has songs, skipping initialization')
             return
         }
 
         try {
             setInitializing(true)
             setError(false)
-            console.log(`🎵 Initializing music queue for user: ${username}`)
+            // console.log(`🎵 Initializing music queue for user: ${username}`)
 
             // Get cached anime list to avoid redundant API calls
             const cachedAnimeList = getCachedAnimeList(username)
             if (cachedAnimeList) {
-                console.log(`📚 Using cached anime list with ${cachedAnimeList.length} entries (no AniList API calls needed)`)
+                // console.log(`📚 Using cached anime list with ${cachedAnimeList.length} entries (no AniList API calls needed)`)
             }
 
             // Only clear if we really need to (not if it's already empty)
             if (queue.length > 0) {
-                console.log(`🧹 Clearing existing queue before initialization`)
+                // console.log(`🧹 Clearing existing queue before initialization`)
                 clearQueue()
             }
 
@@ -95,7 +95,7 @@ export const usePlayerQueue = () => {
 
             for (let i = 0; i < 5; i++) {
                 try {
-                    console.log(`🎲 Fetching random song ${i + 1}/5...`)
+                    // console.log(`🎲 Fetching random song ${i + 1}/5...`)
                     const randomSong = await randomSongService.getRandomSong(username, {
                         songTypes,
                         animeList: cachedAnimeList || undefined // Pass cached list to avoid API calls
@@ -103,9 +103,9 @@ export const usePlayerQueue = () => {
 
                     const queueItem = createQueueItem(randomSong)
                     initialSongs.push(queueItem)
-                    console.log(`✅ Added song: "${queueItem.song.songName}" by ${queueItem.song.songArtist}`)
+                    // console.log(`✅ Added song: "${queueItem.song.songName}" by ${queueItem.song.songArtist}`)
                 } catch (error) {
-                    console.warn(`⚠️ Failed to fetch song ${i + 1}:`, error)
+                    // console.warn(`⚠️ Failed to fetch song ${i + 1}:`, error)
                     // Continue trying to get other songs
                 }
             }
@@ -119,7 +119,7 @@ export const usePlayerQueue = () => {
             setCurrentIndex(0)
             setInitialized(true)
 
-            console.log(`🎉 Queue initialized with ${initialSongs.length} songs`)
+            // console.log(`🎉 Queue initialized with ${initialSongs.length} songs`)
 
             // Preload additional songs in background
             setTimeout(() => {
@@ -127,7 +127,7 @@ export const usePlayerQueue = () => {
             }, 1000) // Delay to avoid immediate re-render
 
         } catch (error) {
-            console.error('❌ Failed to initialize queue:', error)
+            // console.error('❌ Failed to initialize queue:', error)
             setError(true, error instanceof Error ? error.message : 'Failed to initialize music queue')
         } finally {
             setInitializing(false)
@@ -137,13 +137,13 @@ export const usePlayerQueue = () => {
     // Preload more songs in background
     const preloadMoreSongs = useCallback(async (username: string, count: number = 6) => {
         try {
-            console.log(`🔄 Preloading ${count} additional songs...`)
+            //  console.log(`🔄 Preloading ${count} additional songs...`)
             setPreloading(true)
 
             // Get cached anime list to avoid redundant API calls
             const cachedAnimeList = getCachedAnimeList(username)
             if (cachedAnimeList) {
-                console.log(`📚 Using cached anime list for preloading (no AniList API calls needed)`)
+                // console.log(`📚 Using cached anime list for preloading (no AniList API calls needed)`)
             }
 
             const newSongs: QueueItem[] = []
@@ -160,16 +160,16 @@ export const usePlayerQueue = () => {
                     queueItem.preloaded = true
                     newSongs.push(queueItem)
                 } catch (error) {
-                    console.warn(`⚠️ Failed to preload song ${i + 1}:`, error)
+                    //  console.warn(`⚠️ Failed to preload song ${i + 1}:`, error)
                 }
             }
 
             if (newSongs.length > 0) {
                 addToQueue(newSongs)
-                console.log(`✅ Preloaded ${newSongs.length} additional songs`)
+                //  console.log(`✅ Preloaded ${newSongs.length} additional songs`)
             }
         } catch (error) {
-            console.warn('⚠️ Failed to preload songs:', error)
+            // console.warn('⚠️ Failed to preload songs:', error)
         } finally {
             setPreloading(false)
         }
@@ -178,13 +178,13 @@ export const usePlayerQueue = () => {
     // Go to next song
     const goToNext = useCallback(async () => {
         if (!storeCanGoNext()) {
-            console.log('🚫 Cannot go to next song - end of queue')
+            // console.log('🚫 Cannot go to next song - end of queue')
             return
         }
 
         // Safety check: ensure queue is not empty
         if (queue.length === 0) {
-            console.error('❌ Cannot go to next song - queue is empty!')
+            // console.error('❌ Cannot go to next song - queue is empty!')
             setError(true, 'Queue is empty')
             return
         }
@@ -198,7 +198,7 @@ export const usePlayerQueue = () => {
             const newIndex = currentIndex + 1
             setCurrentIndex(newIndex)
 
-            console.log(`⏭️ Moving to next song (${newIndex + 1}/${queue.length})`)
+            // console.log(`⏭️ Moving to next song (${newIndex + 1}/${queue.length})`)
 
             // Preload more songs when we're getting close to the end
             const remainingSongs = queue.length - newIndex
@@ -208,7 +208,7 @@ export const usePlayerQueue = () => {
                 }, 100) // Small delay to avoid immediate re-render
             }
         } catch (error) {
-            console.error('❌ Error going to next song:', error)
+            // console.error('❌ Error going to next song:', error)
             setError(true, 'Failed to go to next song')
         }
     }, [queue, currentIndex, currentUsername, storeCanGoNext, setError, addToHistory, setCurrentIndex, preloadMoreSongs])
@@ -216,7 +216,7 @@ export const usePlayerQueue = () => {
     // Go to previous song
     const goToPrevious = useCallback(() => {
         if (!storeCanGoPrevious()) {
-            console.log('🚫 Cannot go to previous song')
+            //  console.log('🚫 Cannot go to previous song')
             return
         }
 
@@ -240,15 +240,15 @@ export const usePlayerQueue = () => {
                     setCurrentIndex(0)
                 }
 
-                console.log(`⏮️ Returned to previous song: "${previousSong.song.songName}"`)
+                //   console.log(`⏮️ Returned to previous song: "${previousSong.song.songName}"`)
             } else if (currentIndex > 0) {
                 // Simply go back one position in queue
                 const newIndex = currentIndex - 1
                 setCurrentIndex(newIndex)
-                console.log(`⏮️ Moving to previous song in queue (${newIndex + 1}/${queue.length})`)
+                //   console.log(`⏮️ Moving to previous song in queue (${newIndex + 1}/${queue.length})`)
             }
         } catch (error) {
-            console.error('❌ Error going to previous song:', error)
+            // console.error('❌ Error going to previous song:', error)
             setError(true, 'Failed to go to previous song')
         }
     }, [history, queue, currentIndex, storeCanGoPrevious, setHistory, setQueue, setCurrentIndex, setError])
@@ -268,9 +268,9 @@ export const usePlayerQueue = () => {
             }
 
             shuffleQueue(currentSong, otherSongs)
-            console.log('🔀 Queue shuffled')
+            //   console.log('🔀 Queue shuffled')
         } catch (error) {
-            console.error('❌ Error shuffling queue:', error)
+            // console.error('❌ Error shuffling queue:', error)
             setError(true, 'Failed to shuffle queue')
         }
     }, [queue, currentIndex, shuffleQueue, setError])
@@ -281,7 +281,7 @@ export const usePlayerQueue = () => {
         minScore?: number
     }) => {
         try {
-            console.log('🎵 Adding new song to queue...')
+            //  console.log('🎵 Adding new song to queue...')
             setPreloading(true)
 
             // Get cached anime list to avoid redundant API calls
@@ -297,10 +297,10 @@ export const usePlayerQueue = () => {
             const queueItem = createQueueItem(randomSong)
             addToQueue([queueItem])
 
-            console.log(`✅ Added song to queue: "${queueItem.song.songName}" by ${queueItem.song.songArtist}`)
+            //  console.log(`✅ Added song to queue: "${queueItem.song.songName}" by ${queueItem.song.songArtist}`)
             return queueItem
         } catch (error) {
-            console.error('❌ Failed to add song to queue:', error)
+            // console.error('❌ Failed to add song to queue:', error)
             setError(true, 'Failed to add new song to queue')
             throw error
         } finally {
@@ -311,11 +311,11 @@ export const usePlayerQueue = () => {
     // Clear and restart queue
     const restartQueue = useCallback(async (username: string) => {
         try {
-            console.log('🔄 Restarting queue...')
+            //  console.log('🔄 Restarting queue...')
             clearQueue()
             await initializeQueue(username)
         } catch (error) {
-            console.error('❌ Failed to restart queue:', error)
+            // console.error('❌ Failed to restart queue:', error)
             setError(true, 'Failed to restart queue')
         }
     }, [clearQueue, initializeQueue, setError])

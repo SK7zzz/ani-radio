@@ -29,7 +29,7 @@ export const usePWAInstall = () => {
         };
 
         const handleAppInstalled = () => {
-            console.log('PWA fue instalada');
+            // console.log('PWA fue instalada');
             setIsInstalled(true);
             setIsInstallable(false);
             setDeferredPrompt(null);
@@ -55,16 +55,16 @@ export const usePWAInstall = () => {
             const { outcome } = await deferredPrompt.userChoice;
 
             if (outcome === 'accepted') {
-                console.log('Usuario aceptó instalar la PWA');
+                // console.log('Usuario aceptó instalar la PWA');
                 setIsInstallable(false);
                 setDeferredPrompt(null);
                 return true;
             } else {
-                console.log('Usuario rechazó instalar la PWA');
+                // console.log('Usuario rechazó instalar la PWA');
                 return false;
             }
         } catch (error) {
-            console.error('Error al intentar instalar la PWA:', error);
+            // console.error('Error al intentar instalar la PWA:', error);
             return false;
         }
     };

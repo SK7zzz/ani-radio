@@ -175,7 +175,7 @@ export class EnhancedCacheService {
             const request = store.put(data)
 
             request.onsuccess = () => {
-                console.log(`✅ Stored with ${strategy} strategy: ${username} (${animeCount} anime, expires in ${cacheDurationHours}h)`)
+                // console.log(`✅ Stored with ${strategy} strategy: ${username} (${animeCount} anime, expires in ${cacheDurationHours}h)`)
                 resolve()
             }
             request.onerror = () => reject(request.error)
@@ -268,7 +268,7 @@ export class EnhancedCacheService {
                     })
 
                     Promise.all(deletePromises).then(() => {
-                        console.log(`🧹 Cleaned up ${toRemove} low-priority cache entries`)
+                        // console.log(`🧹 Cleaned up ${toRemove} low-priority cache entries`)
                         resolve()
                     })
                 } else {

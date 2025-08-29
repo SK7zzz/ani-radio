@@ -134,8 +134,8 @@ export const useMusicPlayer = ({
                     .then(() => {
                         dispatch({ type: 'PLAY' })
                     })
-                    .catch((error) => {
-                        console.warn('Auto-play failed:', error)
+                    .catch((_error) => {
+                        // console.warn('Auto-play failed:', error)
                         // Update global store to reflect actual state
                         globalPlayerState.setPlaying(false)
                     })
@@ -254,12 +254,12 @@ export const useMusicPlayer = ({
             const handleError = () => {
                 const nextIndex = urlIndex + 1
                 if (nextIndex < urlsToTry.length && !hasTriedFallback.current) {
-                    console.warn(`❌ Audio URL failed (${currentUrl}), trying fallback...`)
+                    // console.warn(`❌ Audio URL failed (${currentUrl}), trying fallback...`)
                     hasTriedFallback.current = true
                     currentUrlIndex.current = nextIndex
                     tryLoadUrl(nextIndex)
                 } else {
-                    console.error(`❌ All audio URLs failed for song: ${song?.title}`)
+                    // console.error(`❌ All audio URLs failed for song: ${song?.title}`)
                 }
             }
 

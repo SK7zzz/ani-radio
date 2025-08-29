@@ -32,7 +32,7 @@ const AnimeList = memo<AnimeListProps>(({ entries, isLoading, className }) => {
                 entry.media.title.romaji?.toLowerCase().includes(query) ||
                 entry.media.title.english?.toLowerCase().includes(query) ||
                 entry.media.title.native?.toLowerCase().includes(query) ||
-                entry.media.genres.some(genre => genre.toLowerCase().includes(query))
+                entry.media.genres?.some(genre => genre.toLowerCase().includes(query))
             )
         }
 
@@ -60,7 +60,7 @@ const AnimeList = memo<AnimeListProps>(({ entries, isLoading, className }) => {
                 case 'year':
                     return (b.media.seasonYear || 0) - (a.media.seasonYear || 0)
                 case 'popularity':
-                    return b.media.popularity - a.media.popularity
+                    return (b.media.popularity || 0) - (a.media.popularity || 0)
                 case 'average-score':
                     return (b.media.averageScore || 0) - (a.media.averageScore || 0)
                 default:
@@ -255,14 +255,14 @@ const AnimeList = memo<AnimeListProps>(({ entries, isLoading, className }) => {
                         {/* Cover Image */}
                         <div className="relative h-64 overflow-hidden">
                             <img
-                                src={entry.media.coverImage.large || entry.media.coverImage.medium}
+                                src={entry.media.coverImage?.large || entry.media.coverImage?.medium || ''}
                                 alt={entry.media.title.userPreferred || entry.media.title.romaji}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                                 loading="lazy"
                             />
                             {/* Overlay with score */}
                             <div className="absolute top-2 right-2 space-y-1">
-                                {entry.score > 0 && (
+                                {entry.score && entry.score > 0 && (
                                     <Badge className="bg-black/70 text-white hover:bg-black/80">
                                         <Star className="h-3 w-3 mr-1 fill-current" />
                                         {entry.score}
@@ -309,7 +309,7 @@ const AnimeList = memo<AnimeListProps>(({ entries, isLoading, className }) => {
                             <div className="flex items-center justify-between text-xs">
                                 <div className="flex items-center gap-1">
                                     <Eye className="h-3 w-3 text-blue-500" />
-                                    <span>{entry.media.popularity.toLocaleString()}</span>
+                                    <span>{entry.media.popularity?.toLocaleString() || 'N/A'}</span>
                                 </div>
 
                                 {entry.media.averageScore && (
@@ -323,7 +323,7 @@ const AnimeList = memo<AnimeListProps>(({ entries, isLoading, className }) => {
                             </div>
 
                             {/* Genres */}
-                            {entry.media.genres.length > 0 && (
+                            {entry.media.genres && entry.media.genres.length > 0 && (
                                 <div className="flex flex-wrap gap-1">
                                     {entry.media.genres.slice(0, 2).map((genre) => (
                                         <Badge key={genre} variant="secondary" className="text-xs">

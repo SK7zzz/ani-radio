@@ -1,290 +1,218 @@
-Welcome to your new TanStack app! 
+# 🎵 AniRadio
 
-# Getting Started
+<div align="center">
+  <img src="src/assets/aniradio-logo.webp" alt="AniRadio Logo" width="120" height="120">
+  
+  **Playlists aleatorias infinitas basadas en tu lista de anime de AniList**
+  
+  [![PWA Ready](https://img.shields.io/badge/PWA-Ready-brightgreen)](https://web.dev/progressive-web-apps/)
+  [![Open Source](https://img.shields.io/badge/Open%20Source-❤️-red)](https://github.com/SK7zzz/ani-radio)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)](https://www.typescriptlang.org/)
+  [![React](https://img.shields.io/badge/React-19-61dafb)](https://reactjs.org/)
+</div>
 
-To run this application:
+## ✨ ¿Qué es AniRadio?
 
-```bash
-npm install
-npm run start  
-```
+AniRadio es una **aplicación web progresiva (PWA)** que crea playlists completamente aleatorias basadas en tu lista de anime de AniList. Combina la potencia de la [API de AniList](https://docs.anilist.co/) con la extensa base de datos de [AniSongDB](https://github.com/xSardine/AMQ-Artists-DB) para ofrecerte una experiencia musical única.
 
-# Building For Production
+### 🚀 Características Principales
 
-To build this application for production:
+- 🎲 **Playlists completamente aleatorias** - Descubre música nueva de tus animes favoritos
+- 📱 **PWA Ready** - Instálala como app nativa en tu dispositivo
+- 🔒 **Sin registro necesario** - Todo se guarda localmente en tu navegador
+- 💾 **Almacenamiento local** - Datos guardados con IndexedDB
+- 🎯 **Basado en AniList** - Usa tu lista personal de anime
+- 🆓 **Completamente gratuito** - Sin anuncios, sin suscripciones
+- 🌙 **Tema oscuro/claro** - Interfaz adaptable
+- 📂 **Código abierto** - Disponible para toda la comunidad
 
-```bash
-npm run build
-```
+## 🛠️ Stack Tecnológico
 
-## Testing
+- **Frontend**: React 19 + TypeScript
+- **Routing**: TanStack Router (File-based routing)
+- **Estado**: TanStack Query + Zustand
+- **Estilos**: Tailwind CSS + shadcn/ui
+- **Build**: Vite
+- **PWA**: Service Worker + Web App Manifest
+- **Base de datos local**: IndexedDB
+- **APIs**: AniList GraphQL API + AniSongDB
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+## 🚀 Inicio Rápido
 
-```bash
-npm run test
-```
+### Prerrequisitos
 
-## Styling
+- Node.js 18+
+- pnpm (recomendado) o npm
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-
-
-
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
+### Instalación
 
 ```bash
-npm install @tanstack/react-query @tanstack/react-query-devtools
+# Clonar el repositorio
+git clone https://github.com/SK7zzz/ani-radio.git
+cd ani-radio
+
+# Instalar dependencias
+pnpm install
+
+# Ejecutar en desarrollo
+pnpm dev
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+La aplicación estará disponible en `http://localhost:5173`
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-// ...
-
-const queryClient = new QueryClient();
-
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
-
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
+### Comandos Disponibles
 
 ```bash
-npm install @tanstack/store
+# Desarrollo
+pnpm dev
+
+# Build para producción
+pnpm build
+
+# Previsualizar build
+pnpm preview
+
+# Linting
+pnpm lint
+
+# Tests (si están configurados)
+pnpm test
 ```
 
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
+## 📱 Instalación como PWA
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
+1. **En navegadores móviles**: Busca el banner de "Añadir a pantalla de inicio"
+2. **En escritorio**: Busca el icono de instalación en la barra de direcciones
+3. **Chrome**: Menú → "Instalar AniRadio..."
 
-const countStore = new Store(0);
+## 🎯 Cómo Usar
 
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
+1. **Conecta tu AniList**: Introduce tu username de AniList
+2. **Carga tu lista**: La app obtendrá automáticamente tu lista de anime
+3. **¡Reproduce!**: Disfruta de playlists aleatorias basadas en tus animes
+4. **Navega**: Usa los controles del reproductor para cambiar canciones
 
-export default App;
+## 🏗️ Estructura del Proyecto
+
+```
+src/
+├── components/          # Componentes React reutilizables
+│   ├── ui/             # Componentes base (shadcn/ui)
+│   ├── anime-list.tsx  # Lista de animes del usuario
+│   ├── music-player.tsx # Reproductor principal
+│   └── ...
+├── contexts/           # Context providers (tema, etc.)
+├── hooks/              # Custom hooks
+│   ├── use-anilist.ts  # Hook para AniList API
+│   ├── use-music-player.ts # Logic del reproductor
+│   └── ...
+├── lib/                # Utilidades y configuración
+│   ├── stores/         # Stores de estado (Zustand)
+│   ├── utils/          # Funciones de utilidad
+│   └── query-client.ts # Configuración TanStack Query
+├── routes/             # Rutas de la aplicación
+│   ├── __root.tsx      # Layout principal
+│   ├── index.tsx       # Página principal
+│   ├── about.tsx       # Página sobre
+│   └── playlist.tsx    # Página de playlist
+├── services/           # Servicios para APIs externas
+│   ├── anilist-service.ts    # API de AniList
+│   ├── anisong-service.ts    # API de AniSongDB
+│   └── ...
+└── types/              # Definiciones de TypeScript
 ```
 
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
+## 🔧 Configuración de Desarrollo
 
-Let's check this out by doubling the count using derived state.
+### Variables de Entorno
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
+Crea un archivo `.env.local` (opcional):
 
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
+```env
+# Variables de desarrollo (si las necesitas)
+VITE_API_BASE_URL=http://localhost:3000
 ```
 
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
+### Configuración del Editor
 
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
+Se recomienda usar VS Code con las siguientes extensiones:
 
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
+- TypeScript y JavaScript
+- Tailwind CSS IntelliSense
+- ES7+ React/Redux/React-Native snippets
+- Prettier - Code formatter
 
-# Demo files
+## 🗺️ Roadmap
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+### 🎯 Próximas Funcionalidades
 
-# Learn More
+- [ ] **Nombres JP/EN**: Switch para alternar idiomas de nombres de anime
+- [ ] **Integración MAL**: Soporte para MyAnimeList
+- [ ] **Filtros Avanzados**: Por género, año, estudio, etc.
+- [ ] **Playlists por Artista**: Playlists específicas de artistas
+- [ ] **Sistema de Favoritos**: Marcar canciones favoritas
+- [ ] **Persistencia de Playlist**: Guardar playlists automáticamente
+- [ ] **Sincronización Multi-dispositivo**: Sync entre dispositivos
 
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+### 🛠️ Mejoras Técnicas
+
+- [ ] Tests unitarios y de integración
+- [ ] Optimización de bundle
+- [ ] Mejor manejo de errores
+- [ ] Métricas de rendimiento
+- [ ] Soporte offline mejorado
+
+## 🤝 Contribuir
+
+¡Las contribuciones son bienvenidas! Este es un proyecto de código abierto y valoramos el feedback de la comunidad.
+
+### Formas de Contribuir
+
+1. **🐛 Reportar Bugs**: Abre un [issue](https://github.com/SK7zzz/ani-radio/issues)
+2. **💡 Sugerir Features**: Comparte tus ideas en issues
+3. **🔧 Pull Requests**: Contribuye con código
+4. **📖 Documentación**: Mejora la documentación
+5. **🌟 Feedback**: Comparte tu experiencia
+
+### Desarrollo Local
+
+```bash
+# Fork el repositorio y clónalo
+git clone https://github.com/tu-usuario/ani-radio.git
+
+# Crea una rama para tu feature
+git checkout -b feature/nueva-funcionalidad
+
+# Realiza tus cambios y commitea
+git commit -m "feat: añadir nueva funcionalidad"
+
+# Push y crea un PR
+git push origin feature/nueva-funcionalidad
+```
+
+## 👥 Equipo
+
+- **[@SK7zzz](https://x.com/SK7zzz)** - Desarrollador Principal
+- **[@moisapto](https://github.com/moisapto)** - Colaborador
+
+## 📞 Contacto
+
+- **Twitter**: [@SK7zzz](https://x.com/SK7zzz)
+- **GitHub Issues**: [Reportar problemas](https://github.com/SK7zzz/ani-radio/issues)
+
+## 📜 Licencias y Atribuciones
+
+- **AniList**: Datos de anime via [AniList API](https://docs.anilist.co/)
+- **AniSongDB**: Base de datos de canciones via [AMQ-Artists-DB](https://github.com/xSardine/AMQ-Artists-DB)
+- **shadcn/ui**: Componentes de interfaz
+- **Lucide**: Iconos
+
+## ❤️ Agradecimientos
+
+Agradecemos a toda la comunidad de anime y a los desarrolladores de las APIs que hacen posible este proyecto. 
+
+**Hecho con ❤️ para la comunidad del anime**
+
+---
+
+*Proyecto sin fines de lucro • Código abierto • Para la comunidad*

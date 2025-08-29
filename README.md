@@ -154,14 +154,6 @@ Se recomienda usar VS Code con las siguientes extensiones:
 - [ ] **Persistencia de Playlist**: Guardar playlists automáticamente
 - [ ] **Sincronización Multi-dispositivo**: Sync entre dispositivos
 
-### 🛠️ Mejoras Técnicas
-
-- [ ] Tests unitarios y de integración
-- [ ] Optimización de bundle
-- [ ] Mejor manejo de errores
-- [ ] Métricas de rendimiento
-- [ ] Soporte offline mejorado
-
 ## 🤝 Contribuir
 
 ¡Las contribuciones son bienvenidas! Este es un proyecto de código abierto y valoramos el feedback de la comunidad.

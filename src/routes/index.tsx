@@ -1,187 +1,81 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import logo from '../logo.svg'
+import { UserSearchSection } from '@/components/user-search-section'
+import { useAniListSearch } from '@/hooks/use-anilist-search'
 
 export const Route = createFileRoute('/')({
-  component: App,
+  component: HomePage,
 })
 
-function App() {
-  const [name, setName] = useState('')
-  const [message, setMessage] = useState('')
+function HomePage() {
+  const {
+    // State
+    searchQuery,
+    searchResults,
+    shouldShowResults,
 
-  const handleGreet = () => {
-    if (name) {
-      setMessage(`¡Hola, ${name}! 🎉 shadcn/ui está funcionando perfectamente.`)
-    } else {
-      setMessage('¡Ingresa tu nombre para saludarte! 😊')
-    }
-  }
+    // Actions
+    handleSearchQueryChange,
+    handleSelectUser,
+    handleSelectFirstUser,
+    handleClearSearch,
+    handleHideResults,
 
-  const handleReset = () => {
-    setName('')
-    setMessage('')
-  }
+    // Loading states
+    isSearchingUser,
+    hasError,
+    errorMessage,
+  } = useAniListSearch()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4">
-      <div className="container mx-auto max-w-4xl py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <img
-            src={logo}
-            className="h-16 w-16 mx-auto mb-4 animate-[spin_20s_linear_infinite]"
-            alt="React logo"
-          />
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            ¡shadcn/ui está listo! 🚀
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-lg">
-            React + TanStack Router + shadcn/ui + TailwindCSS
-          </p>
-        </div>
+    <div className="min-h-[calc(100vh-4.1rem)] bg-gradient-to-br from-primary/15 via-background to-primary/10 dark:from-primary/3 dark:via-background dark:to-primary/5">
+      {/* Main content */}
+      <div className="container mx-auto px-4 py-8">
+        {/* User Search Section - Always centered since we removed the selected user content */}
+        <UserSearchSection
+          searchQuery={searchQuery}
+          onSearchQueryChange={handleSearchQueryChange}
+          onSelectUser={handleSelectUser}
+          onSelectFirstUser={handleSelectFirstUser}
+          onClear={handleClearSearch}
+          onHideResults={handleHideResults}
+          searchResults={searchResults}
+          shouldShowResults={shouldShowResults}
+          isLoading={isSearchingUser}
+          hasError={hasError}
+          errorMessage={errorMessage || undefined}
+        />
 
-        {/* Demo Cards */}
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Interactive Demo Card */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🎯 Demo Interactivo
-              </CardTitle>
-              <CardDescription>
-                Prueba los componentes de shadcn/ui en acción
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Tu nombre</Label>
-                <Input
-                  id="name"
-                  placeholder="Escribe tu nombre aquí..."
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+        {/* Compatibility Notice */}
+        <div className="mt-6 max-w-2xl mx-auto">
+          <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-blue-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
               </div>
-              <div className="flex gap-2">
-                <Button onClick={handleGreet} className="flex-1">
-                  Saludar 👋
-                </Button>
-                <Button variant="outline" onClick={handleReset}>
-                  Limpiar
-                </Button>
-              </div>
-              {message && (
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                  <p className="text-green-800 dark:text-green-200 font-medium">
-                    {message}
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Component Showcase Card */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🎨 Variantes de Botones
-              </CardTitle>
-              <CardDescription>
-                Diferentes estilos disponibles en shadcn/ui
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-2">
-                <Button variant="default">Default</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="outline">Outline</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="link">Link</Button>
-                <Button variant="destructive" size="sm">Destructive</Button>
-              </div>
-              <div className="flex gap-2 items-center">
-                <Button size="sm">Small</Button>
-                <Button size="default">Default</Button>
-                <Button size="lg">Large</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Info Card */}
-        <Card className="mt-6 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              📚 Información del Setup
-            </CardTitle>
-            <CardDescription>
-              Tu proyecto está configurado con las mejores herramientas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <h4 className="font-semibold text-sm text-slate-700 dark:text-slate-300">
-                  ✅ Tecnologías instaladas:
-                </h4>
-                <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                  <li>• React 19 con TypeScript</li>
-                  <li>• TanStack Router para routing</li>
-                  <li>• TailwindCSS v4 para estilos</li>
-                  <li>• shadcn/ui para componentes</li>
-                  <li>• Vite para desarrollo</li>
-                </ul>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold text-sm text-slate-700 dark:text-slate-300">
-                  🚀 Próximos pasos:
-                </h4>
-                <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                  <li>• Instala más componentes con <code className="bg-slate-200 dark:bg-slate-700 px-1 rounded">npx shadcn@latest add [component]</code></li>
-                  <li>• Personaliza el tema en <code className="bg-slate-200 dark:bg-slate-700 px-1 rounded">src/styles.css</code></li>
-                  <li>• Explora la documentación oficial</li>
-                </ul>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                  Compatibilidad con plataformas
+                </h3>
+                <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
+                  Actualmente solo tenemos compatibilidad con <strong>AniList</strong>. Estamos trabajando para
+                  implementar soporte para <strong>MyAnimeList</strong> próximamente.
+                </p>
+                <p className="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                  Mientras tanto, puedes migrar tu lista de MyAnimeList a AniList siguiendo{' '}
+                  <a
+                    href="https://edimakor.hitpaw.com/video-editing-footage/how-to-import-anime-list-to-other-websites.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-blue-600 dark:hover:text-blue-200 font-medium"
+                  >
+                    este tutorial
+                  </a>.
+                </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Footer */}
-        <div className="text-center mt-8 space-y-2">
-          <div className="flex justify-center gap-4">
-            <a
-              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline"
-              href="https://ui.shadcn.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              📖 shadcn/ui Docs
-            </a>
-            <a
-              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline"
-              href="https://tanstack.com/router"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              🛣️ TanStack Router
-            </a>
-            <a
-              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline"
-              href="https://tailwindcss.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              🎨 TailwindCSS
-            </a>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            nyan~ ¡Tu proyecto está listo para crear cosas increíbles! 🐱
-          </p>
         </div>
       </div>
     </div>

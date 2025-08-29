@@ -1,19 +1,18 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { QueryClient } from '@tanstack/react-query'
-
-interface RouterContext {
-  queryClient: QueryClient
-}
+import { ThemeProvider } from '@/contexts/theme-context'
+import { Navbar } from '@/components/navbar'
+import { GlobalMusicPlayer } from '@/components/global-music-player'
 
 export const Route = createRootRoute({
-  context: (): RouterContext => {
-    throw new Error('Router context should be provided')
-  },
   component: () => (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
+    <ThemeProvider defaultTheme="dark" storageKey="ani-radio-theme">
+      <div className="bg-background text-foreground">
+        <Navbar />
+        <main>
+          <Outlet />
+        </main>
+        <GlobalMusicPlayer />
+      </div>
+    </ThemeProvider>
   ),
 })

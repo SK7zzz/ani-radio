@@ -33,7 +33,7 @@ export const Navbar = () => {
                         >
                             <Link to="/" className="relative" onClick={closeMobileMenu}>
                                 <img
-                                    src="/src/assets/aniradio-logo.png"
+                                    src="/aniradio-logo.png"
                                     alt="AniRadio Logo"
                                     className="w-24 h-24 object-contain"
                                 />
